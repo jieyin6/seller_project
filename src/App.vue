@@ -1,13 +1,20 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <router-view/>
+    <header-vue></header-vue>
+    <nav-vue></nav-vue>
+    
   </div>
 </template>
 
 <script>
+import headerVue from './components/header/header'
+import navVue from './components/nav/nav'
 export default {
-  name: 'App'
+  name: 'App',
+  components:{
+    headerVue:headerVue,
+    navVue:navVue
+  }
 }
 </script>
 
@@ -18,6 +25,9 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  
+}
+.active{
+  color: rgb(240, 20, 20)
 }
 </style>
