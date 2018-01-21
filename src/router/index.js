@@ -1,9 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
-import goods from '../components/nav/goods'
-import seller from '../components/nav/seller'
-import discuss from '../components/nav/discuss'
+
 
 Vue.use(Router)
 
@@ -12,23 +10,16 @@ export default new Router({
   linkActiveClass:'active',
   routes: [
     {
-      path: '/',
-     component: goods
+      path: '/'
     },
     {
-      path:'/goods',
-      name:'goods',
-      component:goods
+      path:'/goods'
     },
     {
-      path:'/seller',
-      name:'seller',
-      component:seller
+      path:'/seller'
     },
     {
-      path:'/discuss',
-      name:'discuss',
-      component:discuss
+      path:'/discuss'
     }
   ]
 })

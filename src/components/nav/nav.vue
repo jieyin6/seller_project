@@ -1,9 +1,11 @@
 <template>
+<div>
 <div class="nav">
-    <router-link to="/goods">商品</router-link>
-    <router-link to="/discuss">评价</router-link>
-    <router-link to="/seller">商家</router-link>
     
+    <router-link to="/goods" class="a">商品</router-link>
+    <router-link to="/discuss" class="a">评价</router-link>
+    <router-link to="/seller" class="a">商家</router-link>
+ </div>   
     <router-view></router-view>
     
 </div>
@@ -11,33 +13,25 @@
 </template>
 
 <script>
-import goods from './goods'
-import seller from './seller'
-import discuss from './discuss'
 export default {
-    name:'navVue',
-    components:{
-        goods:goods,
-        seller:seller,
-        discuss:discuss
-    }
+    name:'navVue'
   
-}
+  }
 </script>
 
 <style>
 .nav{
     display: flex;
     justify-content: space-around;
-    height: 80px;
+    height: 40px;
     border-bottom: 1px solid rgba(7, 17, 27, 0.1);
-    font-size: 28px;
-    line-height: 80px;
+    font-size: 14px;
+    line-height: 40px;
     color: rgb(77, 85, 93);
     background-color: #fff
 
 }
-a{
+.a{
     text-decoration: none;
     color: rgb(77, 85, 93);
 }
