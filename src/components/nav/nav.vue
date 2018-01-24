@@ -22,7 +22,6 @@ export default {
 <style>
 .nav{
     display: flex;
-    justify-content: space-around;
     height: 40px;
     border-bottom: 1px solid rgba(7, 17, 27, 0.1);
     font-size: 14px;
@@ -32,6 +31,7 @@ export default {
 
 }
 .a{
+    flex:1;
     text-decoration: none;
     color: rgb(77, 85, 93);
 }

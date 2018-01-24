@@ -2,73 +2,83 @@
   <div class="header">
     <div class="headerTop">
       <div class="seller-pic">
-        <img v-bind:src="src" alt="">
+        <img v-bind:src="seller.avatar" alt="">
       </div>
       <div class="seller-name">
           <div class="seller_name">
             <img src="./pinpai.png" alt="">
-            <p class="name">{{name}}</p>
+            <p class="name">{{seller.name}}</p>
           </div>
-          <p class="des">{{des}}/{{time}}分钟送达</p>
-          <div class="reduceMsg">
+          <p class="des">{{seller.description}}/{{seller.deliveryTime}}分钟送达</p>
+          <div class="reduceMsg" v-if="seller.supports">
              <img src='./jian.png' alt="">
-             <p class="reduce_msg">{{reduceMsg}}</p>
+             <p class="reduce_msg">{{seller.supports[0].description}}</p>
           </div>
           
-          <div class="seller-right">
-            <span>{{count}}个</span> 
+          <div class="seller-right" v-show="showDetail()" v-if="seller.supports">
+            <span>{{seller.supports.length}}个</span> 
             <span>&gt;</span>
             </div>
           
       </div>
     </div>
-      <div class="seller-ad">
+      <div class="seller-ad" v-show="showDetail()">
         <img src='./ad.png'  alt="">
-        <p class="advertisement">{{advertisement}}</p>
+        <p class="advertisement">{{seller.bulletin}}</p>
         <p class="hide_ad">&gt;</p>
+      </div>
+      <div class="background">
+        <img v-bind:src="seller.avatar" alt="">
+      </div>
+      <div class="detail" v-show="detailShow">
+        <div class="detail-wrapper clearfix" >
+          <div class="detail-main">
+            <p class="detail-name">{{seller.name}}</p>
+            <star :size="48" :score="seller.score"></star>
+          </div>
+        </div>
+        <div class="detail-close" >
+          <i class="icon-close"></i>
+        </div>
       </div>
   </div>
 </template>
 
 <script>
-
+import star from '../star/star'
 export default {
   name:'headerVue',
-  data:function(){
-    return{
-     src:'',
-     name:'',
-     des:'',
-     time:'',
-     reduceMsg:'',
-     advertisement:'',
-     count:''
+  components:{
+    star:star
+  },
+  props:{
+    seller:{
+      type:Object
     }
   },
-  created:function(){
-    var _this =this;
-    this.$http.get('/msg').then(function(res){
-      console.log(res.data.seller)
-      _this.src = res.data.seller.avatar;
-      _this.name = res.data.seller.name;
-      _this.des = res.data.seller.description;
-      _this.time =res.data.seller.deliveryTime;
-      _this.reduceMsg =res.data.seller.supports[0].description;
-      _this.advertisement = res.data.seller.bulletin;
-      _this.count = res.data.seller.supports.length
-    }).catch(function(err){
-      console.log(err)
-    })
-  }
+ data:function(){
+   return{
+     detailShow:false
+   }
+ },
+ methods:{
+   showDetail:function(){
+     console.log(1);
+     this.detailShow = true
+   },
+   
+ }
 }
 </script>
 
 <style>
+
 .header{
    height: 134px;
    width: 100%;
    background-color: rgba(7,17, 27, 0.5) ;
    position: relative;
+   overflow: hidden;
    /*filter: blur(10px)*/
 }
 .headerTop{
@@ -179,5 +189,61 @@ white-space: nowrap;
   font-weight: 200;
   line-height: 28px;
 
+}
+.background img{
+  width: 100%;
+  height: 100%;
+}
+.background{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  filter: blur(10px)
+}
+.detail{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 17, 27, 0.8)
+}
+.clearfix{
+  display: inline-block
+}
+.clearfix:after{
+  display: block;
+  content: "";
+  height: 0;
+  line-height: 0;
+  clear: both;
+  visibility: hidden;
+}
+.detail .detail-wrapper{
+  min-height: 100%;
+  width: 100%
+}
+.detail .detail-main{
+  margin-top: 64px;
+  padding-bottom: 64px
+}
+.detail-main .detail-name{
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: 700;
+  color: rgb(255, 255, 255);
+  line-height: 16px
+}
+.detail .detail-close{
+  position: relative;
+  height: 32px;
+  width: 32px;
+  margin:-64px auto 0 auto;
+  clear: both;
 }
 </style>

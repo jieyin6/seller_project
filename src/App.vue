@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header-vue></header-vue>
+    <header-vue :seller="seller"></header-vue>
     <nav-vue></nav-vue>
     
   </div>
@@ -14,6 +14,20 @@ export default {
   components:{
     headerVue:headerVue,
     navVue:navVue
+  },
+  data:function(){
+    return{
+      seller:{}
+    }
+  },
+  created:function(){
+    var _this =this;
+    this.$http.get('/msg').then(function(res){
+      console.log(res.data.seller)
+      _this.seller = res.data.seller
+    }).catch(function(err){
+      console.log(err)
+    })
   }
 }
 </script>
@@ -27,7 +41,5 @@ export default {
   color: #2c3e50;
   
 }
-.active{
-  color: rgb(240, 20, 20)
-}
+
 </style>
