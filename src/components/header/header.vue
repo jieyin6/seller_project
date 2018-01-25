@@ -15,7 +15,7 @@
           </div>
           <p class="des">{{seller.description}}/{{seller.deliveryTime}}分钟送达</p>
           <div class="reduceMsg" v-if="seller.supports">
-             <img src='./imgs/jian.png' alt="">
+             <span class="icon-jian" :class="classMap[seller.supports[0].type]"></span>
              <p class="reduce_msg">{{seller.supports[0].description}}</p>
           </div>
           
@@ -189,11 +189,16 @@ export default {
   margin-bottom: 10px
 }
 /* 商家满减活动*/
-.seller-name .reduceMsg img{
-  display: inline-block;
+.seller-name .reduceMsg .icon-jian{
+  display: block;
+  float: left;
   width: 12px;
   height: 12px;
-  border-radius: 2px
+  margin-right: 4px;
+  border-radius: 2px;
+  background-size: 12px 12px;
+  background-repeat: no-repeat;
+  
 }
 .reduceMsg .reduce_msg{
   text-align: left;
@@ -342,19 +347,19 @@ white-space: nowrap;
   background-size: 16px 16px ;
   background-repeat:no-repeat;
 }
-.support-item .decrease{
+ .decrease{
   background-image: url('./imgs/jian.png')
 }
-.support-item .discount{
+ .discount{
   background-image: url('./imgs/discount_2@2x.png')
 }
-.support-item .guarantee{
+ .guarantee{
   background-image: url('./imgs/guarantee_2@2x.png')
 }
-.support-item .invoice{
+ .invoice{
   background-image: url('./imgs/invoice_2@2x.png')
 }
-.support-item .special{
+ .special{
   background-image: url('./imgs/special_2@2x.png')
 }
 .support-item .item-text{
