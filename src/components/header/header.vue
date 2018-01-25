@@ -10,12 +10,12 @@
        <!--卖家信息-->
       <div class="seller-name">
           <div class="seller_name">
-            <img src="./pinpai.png" alt="">
+            <img src="./imgs/pinpai.png" alt="">
             <p class="name">{{seller.name}}</p>
           </div>
           <p class="des">{{seller.description}}/{{seller.deliveryTime}}分钟送达</p>
           <div class="reduceMsg" v-if="seller.supports">
-             <img src='./jian.png' alt="">
+             <img src='./imgs/jian.png' alt="">
              <p class="reduce_msg">{{seller.supports[0].description}}</p>
           </div>
           
@@ -29,7 +29,7 @@
       <!-- 头部下半部分开始-->
       <!--公告 -->
       <div class="seller-ad" v-show="showDetail" @click="showDetail()">
-        <img src='./ad.png'  alt="">
+        <img src='./imgs/ad.png'  alt="">
         <p class="advertisement">{{seller.bulletin}}</p>
         <p class="hide_ad">&gt;</p>
       </div>
@@ -343,19 +343,19 @@ white-space: nowrap;
   background-repeat:no-repeat;
 }
 .support-item .decrease{
-  background-image: url('./jian.png')
+  background-image: url('./imgs/jian.png')
 }
 .support-item .discount{
-  background-image: url('./discount_2@2x.png')
+  background-image: url('./imgs/discount_2@2x.png')
 }
 .support-item .guarantee{
-  background-image: url('./guarantee_2@2x.png')
+  background-image: url('./imgs/guarantee_2@2x.png')
 }
 .support-item .invoice{
-  background-image: url('./invoice_2@2x.png')
+  background-image: url('./imgs/invoice_2@2x.png')
 }
 .support-item .special{
-  background-image: url('./special_2@2x.png')
+  background-image: url('./imgs/special_2@2x.png')
 }
 .support-item .item-text{
   font-size: 12px;
