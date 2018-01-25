@@ -21,6 +21,7 @@ export default {
     }
   },
   created:function(){
+    //获取seller数据
     var _this =this;
     this.$http.get('/msg').then(function(res){
       console.log(res.data.seller)

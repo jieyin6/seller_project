@@ -23,8 +23,10 @@ export default {
           return "star-"+this.size
       },
       itemClasses:function(){
+          console.log(this.score)
           var result = [];
-          var score = Math.floor(score*2)/2;
+          var score = Math.floor(this.score*2)/2;
+          console.log(score)
           var hasDecimal = score % 1 !==0; //小数
           var integer = Math.floor(score);  //整数
           for(var i = 0 ;i < integer ; i++){
@@ -46,7 +48,8 @@ export default {
 <style>
 
 .star{
-    font-size: 0
+    font-size: 0;
+    
 }
 .star-48 .star-item{
     width: 20px;
