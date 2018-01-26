@@ -2,18 +2,20 @@
   <div id="app">
     <header-vue :seller="seller"></header-vue>
     <nav-vue></nav-vue>
-    
+    <goods></goods>
   </div>
 </template>
 
 <script>
 import headerVue from './components/header/header'
 import navVue from './components/nav/nav'
+import goods from './components/goods/goods'
 export default {
   name: 'App',
   components:{
     headerVue:headerVue,
-    navVue:navVue
+    navVue:navVue,
+    goods:goods
   },
   data:function(){
     return{
