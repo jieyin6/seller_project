@@ -10,7 +10,7 @@
        <!--卖家信息-->
       <div class="seller-name">
           <div class="seller_name">
-            <img src="./imgs/pinpai.png" alt="">
+            <span class="seller-img"></span>
             <p class="name">{{seller.name}}</p>
           </div>
           <p class="des">{{seller.description}}/{{seller.deliveryTime}}分钟送达</p>
@@ -29,7 +29,7 @@
       <!-- 头部下半部分开始-->
       <!--公告 -->
       <div class="seller-ad" v-show="showDetail" @click="showDetail()">
-        <img src='./imgs/ad.png'  alt="">
+        <span class="ad-img"></span>
         <p class="advertisement">{{seller.bulletin}}</p>
         <p class="hide_ad">&gt;</p>
       </div>
@@ -163,14 +163,18 @@ export default {
   overflow: hidden
   }
  /* 品牌图片 */
-.seller-name img{
+ .seller-name .seller-img{
   float: left;
   display: block;
   width: 30px;
   height: 18px;
   margin-right: 6px;
-  border-radius: 2px
-  }
+  border-radius: 2px;
+  background-size: 30px 18px;
+  background-image: url('./imgs/pinpai.png');
+  background-repeat: no-repeat
+ }
+
   /* 商家名称 */
 .seller-name .name{
   float: left;
@@ -226,13 +230,16 @@ export default {
 }
 /* 公告 */
 .seller-ad{position: relative}
-.seller-ad img{
+.seller-ad .ad-img{
   display: block;
   float: left;
   width: 22px;
   height: 12px;
   margin-right: 4px;
-  margin-top: 8px
+  margin-top: 8px;
+  background-image: url('./imgs/ad.png');
+  background-size:  22px 12px;
+  background-repeat:  no-repeat;
 }
 .seller-ad .advertisement{
   font-size: 10px;

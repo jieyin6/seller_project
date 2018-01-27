@@ -1,9 +1,11 @@
 <template>
   <div class="goods">
       <!--左边菜单-->
-      <div class="menu-wrapper">
+      <div class="menu-wrapper" ref="menuWrapper">
           <ul >
-              <li v-for="item in goods" class="menu-li">
+              <li v-for="(item,index) in goods" class="menu-li"
+              :class="{'current':currentIndex === index}" @click="selectMenu(index)">
+                   <!--如果当前index和index相等时 会被赋予current类-->
                   <span class="menu-text">
                         <span v-show="item.type > 0" class="menu-icon" 
                         :class="classMap[item.type]"></span>{{item.name}}
@@ -12,14 +14,14 @@
           </ul>
       </div>
        <!--右边商品-->
-      <div class="goods-wrapper">
+      <div class="goods-wrapper" ref="foodsWrapper">
            <!--商品模块-->
           <ul>
-              <li v-for="item in goods" class="goods-list">
+              <li v-for="item in goods" class="goods-list food-list-height">
                   <h1>{{item.name}}</h1>
                    <!--模块内商品-->
                   <ul>
-                      <li v-for=" food in item.foods" class="food-list">
+                      <li v-for=" food in item.foods" class="food-list ">
                            <!--商品名称-->
                           <div class="food-img">
                               <img :src="food.icon" alt="">
@@ -42,19 +44,44 @@
               </li>
           </ul>
       </div>
+      <shopcart></shopcart>
   </div>
 </template>
 
 <script>
+import Bscroll from 'better-scroll'
+import shopcart from '../shopcart/shopcart'
 export default {
     props:{
         seller:{
             type:Object
         }
     },
+    components:{
+        shopcart:shopcart
+    },
     data:function(){
         return{
-            goods:[]
+            goods:[],
+            //商品模块高度
+            listHeight:[],
+            scrollY:0
+        }
+    },
+    computed:{
+        //左侧indx应该在哪里
+        currentIndex:function(){
+            for(var i = 0 ;i<this.listHeight.length;i++){
+                var height1 = this.listHeight[i];
+                var height2 = this.listHeight[i+1];
+                console.log(height1);
+                //如果是height1是最后一个，height2会返回undefined
+                if(!height2 || (this.scrollY>height1 && this.scrollY<height2)){
+                   console.log(i);
+                    return i ;
+                 }
+                 }
+         return 0 
         }
     },
     created:function(){
@@ -63,11 +90,50 @@ export default {
         var _this = this;
         this.$http.get('/msg').then(function(res){
             _this.goods = res.data.goods;
-            
-        }).catch(function(err){
+             _this.$nextTick(() => {
+                 _this.initScroll();
+                 _this.calculateHeight();
+            })
+            }).catch(function(err){
             console.log(err)
         });
         
+    },
+  
+    methods:{
+        //滚动方法
+        initScroll:function(){
+            this.menuScroll = new Bscroll(this.$refs.menuWrapper,{
+                click:true
+            }); //参数是 dom对象和json对象
+            this.foodScroll = new Bscroll(this.$refs.foodsWrapper,{
+                probeType:3
+            }) ;
+            //监听滚动
+            this.foodScroll.on('scroll',(pos)=>{
+                this.scrollY =Math.abs( Math.round(pos.y))//取整取绝对值
+            })
+           
+        },
+        //计算商品各个模块的值
+        calculateHeight:function(){
+            var foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-height");
+            var height = 0;
+            this.listHeight.push(height);
+            for(var i = 0 ;i < foodList.length ; i++){
+                var item = foodList[i];
+                 height += item.clientHeight;
+                this.listHeight.push(height)
+                
+            }
+        },
+        //点击左侧调到右侧对应模块
+        selectMenu:function(index){
+             var foodList = this.$refs.foodsWrapper.getElementsByClassName("food-list-height");
+             var el = foodList[index];
+             this.foodScroll.scrollToElement(el,300);
+            
+        }
     }
 }
 </script>
@@ -94,8 +160,19 @@ export default {
     display: table;
     height: 54px;
     width: 56px;
-    margin: 0 auto;
+    padding: 0 12px;
     line-height: 54px
+}
+
+.menu-wrapper .current{
+    position: relative;
+    z-index: 10px;
+    margin-top: -1px;
+    background-color: #fff;
+    font-weight: 700
+}
+.current .menu-text{
+    border-bottom: none;
 }
 /*菜单中的折扣图标及文字样式*/
 .menu-li .menu-icon{
@@ -105,6 +182,7 @@ export default {
   margin-right: 2px;
   background-size: 12px 12px ;
   background-repeat:no-repeat;
+  vertical-align: -2px
 }
  .decrease{
   background-image: url('./imgs/decrease_3@2x.png')
@@ -149,6 +227,10 @@ export default {
     padding-bottom: 18px;
     border-bottom: 1px solid rgba(7, 17, 27, 0.1)
 }
+.food-list:last-child{
+    padding-bottom:0;
+    border-bottom:none 
+}
 /*商品图片*/
 .food-img img{
     display: inline-block;
@@ -176,8 +258,17 @@ export default {
     line-height: 10px;
     margin-bottom: 8px
 }
+.food-content .food-type{
+    line-height: 12px;
+}
+.food-des{
+    overflow: hidden;
+}
+.food-des span{
+    display: block;
+    float: left;
+}
 .food-des span:first-child{
-    display: inline-block;
     margin-right: 12px;
     }
     /*价格*/
@@ -194,5 +285,8 @@ export default {
     color: rgb(147, 153, 159);
     line-height: 14px;
     text-decoration: line-through
+}
+.current-price,.old-price{
+    float: left;
 }
 </style>
