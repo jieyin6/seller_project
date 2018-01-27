@@ -76,7 +76,7 @@ export default {
                 var height2 = this.listHeight[i+1];
                 console.log(height1);
                 //如果是height1是最后一个，height2会返回undefined
-                if(!height2 || (this.scrollY>height1 && this.scrollY<height2)){
+                if( !height2 || (this.scrollY>=height1 && this.scrollY<=height2)){
                    console.log(i);
                     return i ;
                  }
@@ -111,7 +111,8 @@ export default {
             }) ;
             //监听滚动
             this.foodScroll.on('scroll',(pos)=>{
-                this.scrollY =Math.abs( Math.round(pos.y))//取整取绝对值
+                this.scrollY = Math.abs(Math.round(pos.y))//取整取绝对值
+                console.log(this.scrollY)
             })
            
         },
@@ -221,6 +222,7 @@ export default {
     background-color:#f3f5f7;
 }
 /*商品模块中商品整体样式*/
+
 .goods-list .food-list{
     display: flex;
     margin: 18px;
@@ -228,7 +230,7 @@ export default {
     border-bottom: 1px solid rgba(7, 17, 27, 0.1)
 }
 .food-list:last-child{
-    padding-bottom:0;
+    margin-bottom:0;
     border-bottom:none 
 }
 /*商品图片*/
@@ -262,16 +264,17 @@ export default {
     line-height: 12px;
 }
 .food-des{
-    overflow: hidden;
+    font-size: 0
 }
 .food-des span{
-    display: block;
-    float: left;
+    font-size: 10px
 }
+
 .food-des span:first-child{
     margin-right: 12px;
     }
     /*价格*/
+.food-content .food-price{font-size: 0}
 .food-content .food-price .current-price{
     display: inline-block;
     margin-right: 8px;
@@ -286,7 +289,5 @@ export default {
     line-height: 14px;
     text-decoration: line-through
 }
-.current-price,.old-price{
-    float: left;
-}
+
 </style>

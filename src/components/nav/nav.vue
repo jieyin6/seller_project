@@ -6,7 +6,7 @@
     <router-link to="/discuss" class="a">评价</router-link>
     <router-link to="/seller" class="a">商家</router-link>
  </div>   
-    <router-view></router-view>
+    
     
 </div>
 
