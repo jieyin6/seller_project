@@ -2,7 +2,7 @@
   <div id="app">
     <header-vue :seller="seller"></header-vue>
     <nav-vue></nav-vue>
-    <router-view></router-view>
+    <router-view :seller='seller'></router-view>
   </div>
 </template>
 

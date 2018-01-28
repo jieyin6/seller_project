@@ -38,19 +38,25 @@
                                   <span class="current-price">￥{{food.price}}</span>
                                   <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                               </div>
+                              <div class="cart-wrapper">
+                                  <cartcontrol :food="food"></cartcontrol>
+                              </div>
                           </div>
                       </li>
                   </ul>
               </li>
           </ul>
       </div>
-      <shopcart></shopcart>
+      <shopcart :delivery-price='seller.deliveryPrice'
+      :min-price='seller.minPrice' :select-foods="selectFoods"
+      ref="shopcart"></shopcart>
   </div>
 </template>
 
 <script>
 import Bscroll from 'better-scroll'
 import shopcart from '../shopcart/shopcart'
+import cartcontrol from '../cartcontrol/cartcontrol'
 export default {
     props:{
         seller:{
@@ -58,7 +64,8 @@ export default {
         }
     },
     components:{
-        shopcart:shopcart
+        shopcart:shopcart,
+        cartcontrol:cartcontrol
     },
     data:function(){
         return{
@@ -82,7 +89,19 @@ export default {
                  }
                  }
          return 0 
-        }
+        },
+        selectFoods:function(){
+            var foodss =[];
+            this.goods.forEach((good) => {
+                //food in item.foods
+                good.foods.forEach((ffood) => {
+                    if(ffood.count){
+                        foodss.push(ffood)
+                    }
+                })
+            })
+            return foodss
+            }
     },
     created:function(){
          this.classMap = ["decrease",'discount','special','invoice','guarantee']
@@ -107,7 +126,8 @@ export default {
                 click:true
             }); //参数是 dom对象和json对象
             this.foodScroll = new Bscroll(this.$refs.foodsWrapper,{
-                probeType:3
+                probeType:3,
+                click:true
             }) ;
             //监听滚动
             this.foodScroll.on('scroll',(pos)=>{
@@ -134,6 +154,14 @@ export default {
              var el = foodList[index];
              this.foodScroll.scrollToElement(el,300);
             
+        },
+        _drop:function(){
+            this.$refs.shopcart.drop(target)
+        }
+    },
+    events:{
+        'cart-add'(target) {
+            this._drop(target)
         }
     }
 }
@@ -227,7 +255,8 @@ export default {
     display: flex;
     margin: 18px;
     padding-bottom: 18px;
-    border-bottom: 1px solid rgba(7, 17, 27, 0.1)
+    border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+    position: relative;
 }
 .food-list:last-child{
     margin-bottom:0;
@@ -244,8 +273,8 @@ export default {
 /*商品信息*/
 .food-content{
     margin-top: 2px;
-    text-align: left
-}
+    text-align: left;
+   }
 /*名称*/
 .food-content .food-name{
     font-size: 14px;
@@ -289,5 +318,9 @@ export default {
     line-height: 14px;
     text-decoration: line-through
 }
-
+.cart-wrapper{
+    position: absolute;
+    right: 0px;
+    bottom: 18px
+}
 </style>
