@@ -2,12 +2,12 @@
   <div class="cartcontrol">
       <transition name="fade">
           <!-- 减 -->
-      <div class="cart-decrease" v-show="food.count > 0" @click="decreaseCart">-</div>
+      <div class="cart-decrease" v-show="food.count > 0" @click.stop.prevent="decreaseCart">-</div>
         </transition>  
         <!-- 数量 -->   
       <div class="cart-count" v-show="food.count > 0 ">{{food.count}}</div>
       <!-- 加 -->
-      <div class="cart-increase" @click="addCart()">+</div>
+      <div class="cart-increase" @click.stop.prevent="addCart()">+</div>
   </div>
 </template>
 

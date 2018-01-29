@@ -21,7 +21,7 @@
                   <h1>{{item.name}}</h1>
                    <!--模块内商品-->
                   <ul>
-                      <li v-for=" food in item.foods" class="food-list ">
+                      <li  @click="selectFood(food,$event)"  v-for=" food in item.foods" class="food-list ">
                            <!--商品名称-->
                           <div class="food-img">
                               <img :src="food.icon" alt="">
@@ -39,7 +39,7 @@
                                   <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                               </div>
                               <div class="cart-wrapper">
-                                  <cartcontrol :food="food"></cartcontrol>
+                                  <cartcontrol :food="food" :cartAdd="add()"></cartcontrol>
                               </div>
                           </div>
                       </li>
@@ -49,14 +49,19 @@
       </div>
       <shopcart :delivery-price='seller.deliveryPrice'
       :min-price='seller.minPrice' :select-foods="selectFoods"
-      ref="shopcart"></shopcart>
+      ref="shopcart" ></shopcart>
+     
+    <fooddes :foodone="selectedFood" ref="fooddes"></fooddes>
+    
   </div>
+    
 </template>
 
 <script>
 import Bscroll from 'better-scroll'
 import shopcart from '../shopcart/shopcart'
 import cartcontrol from '../cartcontrol/cartcontrol'
+import fooddes from '../foosDes/foodDes'
 export default {
     props:{
         seller:{
@@ -65,14 +70,16 @@ export default {
     },
     components:{
         shopcart:shopcart,
-        cartcontrol:cartcontrol
+        cartcontrol:cartcontrol,
+        fooddes:fooddes
     },
     data:function(){
         return{
             goods:[],
             //商品模块高度
             listHeight:[],
-            scrollY:0
+            scrollY:0,
+            selectedFood:{}
         }
     },
     computed:{
@@ -155,15 +162,19 @@ export default {
              this.foodScroll.scrollToElement(el,300);
             
         },
-        _drop:function(){
+        add:function(target){
+            this._drop(target)
+        },
+        _drop:function(target){
             this.$refs.shopcart.drop(target)
+        },
+        selectFood:function(food,event){
+            this.selectedFood = food ;
+            //调用子组件的show方法
+            this.$refs.fooddes.show()
         }
     },
-    events:{
-        'cart-add'(target) {
-            this._drop(target)
-        }
-    }
+    
 }
 </script>
 
@@ -323,4 +334,5 @@ export default {
     right: 0px;
     bottom: 18px
 }
+
 </style>

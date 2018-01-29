@@ -1,7 +1,8 @@
 <template>
+
   <div class="shopcart">
       <!--购物车内容-->
-      <div class="shopcart-content">
+      <div class="shopcart-content" @click="toggleList()">
            <!--购物车左边-->
           <div class="shopcart-left">
               <div class="logo-wrapper">
@@ -14,18 +15,45 @@
            <!--购物车右边-->
           <div class="shopcart-right minPrice" :class="changeClass">{{payDes}}</div>
       </div>
+      
       <div class="ball-container" >
-          <transition-group name="drop">
+          
           <div v-for="(ball,index) in balls" :key="ball.index" v-show="ball.show" class="ball">
-              <div class="inner" :key="ball.index"></div>
+              <div class="inner" ></div>
           </div>
-          </transition-group>
+         
+      </div>
+    
+      <!--购物车列表没写完-->
+      <div class="shopcart-list">
+          <div class="list-header">
+              <h1>购物车</h1>
+              <p>清空</p>
+          </div>
+          <div class="list-content" v-show="listShow">
+              <ul>
+                  <li class="content-li" v-for="food in selectFoods">
+                      <span class="li-name">{{food.name}}</span>
+                      <div class="li-right">
+                      <span class="li-price">{{food.price*food.count}}</span>
+                      </div>
+                      <div class="li-cartcontrol">
+                      <cartcontrol :food="food"></cartcontrol>
+                      </div>
+                  </li>
+              </ul>
+          </div>
       </div>
   </div>
+  
 </template>
 
 <script>
+import cartcontrol from '../cartcontrol/cartcontrol'
 export default {
+    components:{
+        cartcontrol:cartcontrol
+    },
   props:{
       selectFoods:{
           type:Array,
@@ -60,8 +88,11 @@ export default {
            {
               show:false
           },
-          ]
+          ],
+          //默认购物车列表折叠
+           fold:true
       }
+     
   },
   computed:{
       //计算总价
@@ -100,11 +131,27 @@ export default {
           }else{
               return `enough`
           }
+      },
+      //购物车列表
+      listShow:function(){
+          if(!this.totalCount){
+              this.fold = true;
+              return false
+          }
+          var showL = !this.fold;
+          return showL
       }
   },
   methods:{
       drop:function(el){
           console.log(el);
+      },
+      //购物车有内容时可显示
+      toggleList:function(){
+          if(!this.totalCount){
+              return;
+          }
+          this.fold = !this.fold
       }
   }
 }
@@ -114,11 +161,11 @@ export default {
 /*购物车整体*/
 .shopcart{
     position: fixed;
+    left: 0;
     bottom: 0;
     z-index: 50;
     width:100%;
     height: 48px;
-   
 }
 /*购物车内容*/
 .shopcart-content{
@@ -150,11 +197,11 @@ export default {
     border-radius: 22px;
     background-color: gray
 }
-//选中商品后的图标效果
+/*选中商品后的图标效果*/
 .logo-wrapper .logo-highlight{
  background-color:#00A0DC 
 }
-//图片右上角数量
+/*图片右上角数量*/
 .logo-wrapper .num{
     position: absolute;
     top: 0;
@@ -206,6 +253,7 @@ export default {
     background-color: #00b43c;
     color: #fff
 }
+/*小球*/
 .ball-container .ball{
     position: fixed;
     bottom: 22px;
@@ -215,6 +263,36 @@ export default {
 .ball .inner{
     width: 24px;
     height: 24px;
-    border-radius: 50%
+    border-radius: 50%;
+    background-color: rgb(0, 160, 220)
+}
+.shopcart-list{
+    position: absolute;
+    top:0; 
+    left: 0;
+    z-index: -1;
+    width: 100%;
+   
+}
+.shopcart-list .list-header{
+    height: 40px;
+    width: 100%;
+    line-height: 40px;
+    background-color: #f3f5f7;
+    padding:0 18px;
+    border-bottom: 1px solid rgba(7, 17, 27, 0.1) 
+}
+.list-header h1{
+    float: left;
+    font-size: 14px;
+    font-weight: 200;
+    color: rgb(7, 17, 27);
+    line-height: 40px
+}
+.list-header p{
+    float: right;
+    font-size: 12px;
+    color: rgb(0, 160, 220);
+    line-height: 40px
 }
 </style>
