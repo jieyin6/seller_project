@@ -22,14 +22,13 @@ export default {
   methods:{
       //点击加使减和数量出现
       addCart:function(){
-          console.log(12345);
           if(!this.food.count){
               //通过vue.set方法添加属性可以被观测到
               Vue.set(this.food,'count',1)
           }else{
               this.food.count++
           }
-          this.$emit('cart-add',event.target)
+          this.$emit('cartadd',event.target)
       },
       //减方法
       decreaseCart:function(){

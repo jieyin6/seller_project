@@ -101,8 +101,7 @@ export default {
           //数组中的每个元素调用回调函数
           this.selectFoods.forEach( (food)=> {
               total += food.price*food.count
-              console.log(total)
-          })
+             })
           return total
       },
       //计算数量

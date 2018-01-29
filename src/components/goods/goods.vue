@@ -39,7 +39,7 @@
                                   <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                               </div>
                               <div class="cart-wrapper">
-                                  <cartcontrol :food="food" :cartAdd="add()"></cartcontrol>
+                                  <cartcontrol :food="food" :cartadd="add()"></cartcontrol>
                               </div>
                           </div>
                       </li>
@@ -108,7 +108,8 @@ export default {
                 })
             })
             return foodss
-            }
+            },
+        
     },
     created:function(){
          this.classMap = ["decrease",'discount','special','invoice','guarantee']
@@ -162,9 +163,10 @@ export default {
              this.foodScroll.scrollToElement(el,300);
             
         },
-        add:function(target){
+         add:function(target){
             this._drop(target)
         },
+       
         _drop:function(target){
             this.$refs.shopcart.drop(target)
         },
