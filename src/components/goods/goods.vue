@@ -39,7 +39,7 @@
                                   <span class="old-price" v-show="food.oldPrice">￥{{food.oldPrice}}</span>
                               </div>
                               <div class="cart-wrapper">
-                                  <cartcontrol :food="food" :cartadd="add()"></cartcontrol>
+                                  <cartcontrol :food="food" @cartadd="add"></cartcontrol>
                               </div>
                           </div>
                       </li>
@@ -163,13 +163,15 @@ export default {
              this.foodScroll.scrollToElement(el,300);
             
         },
+        //调用_drop函数，防耦合
          add:function(target){
             this._drop(target)
         },
-       
+       //调用shopcart组件drop函数
         _drop:function(target){
             this.$refs.shopcart.drop(target)
         },
+        //选中食品展开详情
         selectFood:function(food,event){
             this.selectedFood = food ;
             //调用子组件的show方法

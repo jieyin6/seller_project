@@ -33,7 +33,8 @@
      <!--商品评价-->
     <div class="food-ratings">
         <h1 class="ratings-title">商品评价</h1>
-       
+        <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
+        :ratings="foodone.ratings"></ratingselect>
     </div>
     </div>
 </div>  
@@ -43,6 +44,10 @@
 import Bscroll from 'better-scroll'
 import Vue from 'vue'
 import cartcontrol from '../cartcontrol/cartcontrol'
+import ratingselect from '../ratingselect/ratingselect'
+var positive = 0;
+var negative = 1;
+var all = 2
 export default {
   props:{
       foodone:{
@@ -50,18 +55,29 @@ export default {
       }
   },
   components:{
-      cartcontrol:cartcontrol
+      cartcontrol:cartcontrol,
+      ratingselect:ratingselect
   },
   data:function(){
       return{
           //商品页不显示
-          showFlag:false
+          showFlag:false,
+          selectType:all,
+          onlyContent:true,
+          desc:{
+              all:'全部',
+              positive:'推荐',
+              negative:'吐槽'
+          }
       }
   },
   methods:{
       //显示商品页并可以滚动
       show:function(){
           this.showFlag = true;
+          //每次打开初始化状态
+          this.selectType=all;
+          this.onlyContent=true;
           if(!this.foodScroll){
           this.$nextTick(()=>{
               this.foodScroll = new Bscroll(this.$refs.foodone,{
@@ -207,37 +223,17 @@ export default {
 }
 /*商品评价*/
 .food-ratings{
-    padding: 18px;
-    background-color: #fff;
+   background-color: #fff;
     border-top: 1px solid rgba(7, 17, 27,0.1);
     text-align: left
 }
 .food-ratings .ratings-title{
-     margin-bottom: 18px;
-    font-size: 14px;
+     padding: 18px;
+     font-size: 14px;
     font-weight: 700;
     color: rgb(7, 17, 27);
     line-height: 14px
 }
-.food-ratings .ratings-box{display: flex}
-.food-ratings .ratings-box p{
-    height: 32px;
-    width: 60px;
-    margin-right: 8px;
-    text-align: center;
-    font-size: 12px;
-    line-height: 32px;
-    color: rgb(77, 85, 93)
-}
-.ratings-box .both{
-    background-color:rgb(0, 160, 220);
-    border-radius: 2px
-    }
-.ratings-box .enjoy{
-    background-color: rgba(0, 160, 220,0.2)
-}
-.ratings-box .hate{
-    background-color: rgba(77, 85, 93, 0.2)
-}
+
 
 </style>
