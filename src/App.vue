@@ -9,15 +9,22 @@
 <script>
 import headerVue from './components/header/header'
 import navVue from './components/nav/nav'
-
+import store from './vuex/vuex/store'
+import {mapState,mapMutations,mapGetters,mapActions} from 'vuex'
 export default {
   name: 'App',
   components:{
     headerVue:headerVue,
     navVue:navVue,
-    
-  },
-  data:function(){
+    },
+    computed:{
+      ...mapState(['seller'])
+    },
+    methods:{
+      ...mapMutations(['initstate']),
+      ...mapActions(['getState'])
+    }
+ /* data:function(){
     return{
       seller:{}
     }
@@ -31,8 +38,15 @@ export default {
     }).catch(function(err){
       console.log(err)
     })
+    }            */
+
+    
+    
+    
+  
   }
-}
+ 
+
 </script>
 
 <style>

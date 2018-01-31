@@ -34,7 +34,29 @@
     <div class="food-ratings">
         <h1 class="ratings-title">商品评价</h1>
         <ratingselect :select-type="selectType" :only-content="onlyContent" :desc="desc"
-        :ratings="foodone.ratings"></ratingselect>
+        :ratings="foodone.ratings"
+        @typeSelect='_selectType' @contentToggle="_toggleContent"></ratingselect>
+        <div class="ratings-wrapper">
+         <ul v-show="foodone.ratings&&foodone.ratings.length">
+          <li v-for="rating in foodone.ratings" v-show="needShow(rating.rateType,rating.text)">
+            <div class="rating-left">
+                <p class="left-time">{{rating.rateTime | formatDate}}</p>
+                <p class="left-text"> 
+                <span  :class="{'positiveClass':rating.rateType === 0}"></span>
+                <span  :class="{'negativeClass':rating.rateType === 1}"></span>
+                <span class="left-rating">{{rating.text}}</span>
+                </p>
+            </div>
+            <div class="rating-right">
+             <span class="right-phone">{{rating.username}}</span>
+           
+             <img :src="rating.avatar" alt="">
+            
+            </div>
+        </li>
+    </ul>
+    <div v-show="!foodone.ratings || !foodone.ratings.length" class="noRatings">暂无评价</div>
+    </div>
     </div>
     </div>
 </div>  
@@ -45,6 +67,7 @@ import Bscroll from 'better-scroll'
 import Vue from 'vue'
 import cartcontrol from '../cartcontrol/cartcontrol'
 import ratingselect from '../ratingselect/ratingselect'
+import {formatDate} from '../common/js/date'
 var positive = 0;
 var negative = 1;
 var all = 2
@@ -58,6 +81,7 @@ export default {
       cartcontrol:cartcontrol,
       ratingselect:ratingselect
   },
+  
   data:function(){
       return{
           //商品页不显示
@@ -85,7 +109,7 @@ export default {
           })
           })
           }else{
-              foodScroll.refresh()
+              this.foodScroll.refresh()
           }
       },
       //隐藏商品页
@@ -95,8 +119,41 @@ export default {
       //购物车按钮
       addFirst:function(){
           Vue.set(this.foodone,'count',1)
+      },
+      //过滤评价
+      needShow:function(type,text){
+          if(this.onlyContent && !text){
+              return false
+          }
+          if(this.selectType === all){
+              return true
+          }else{
+              return type === this.selectType
+          }
+      },
+      //接收子组件的seletType toggleContent
+      _selectType:function(type){
+          console.log(type)
+          this.selectType = type;
+          this.$nextTick(() => {
+               this.foodScroll.refresh()
+          })
+          
+      },
+      _toggleContent:function(onlycontent){
+          this.onlyContent = onlycontent;
+           this.$nextTick(() => {
+               this.foodScroll.refresh()
+          })
+          
       }
       
+  },
+  computed:{
+      formatDate:function(time){
+          var date = new Date(time);
+          return formatDate(time,'yyyy-MM-dd hh:mm')
+      }
   }
 }
 </script>
@@ -234,6 +291,73 @@ export default {
     color: rgb(7, 17, 27);
     line-height: 14px
 }
+.ratings-wrapper{
+    padding: 0 18px;
+    position: relative;
+}
+.ratings-wrapper li{
+    padding: 16px 0 ;
+    border-bottom: 1px solid rgba(7, 17, 27,0.1);
+    overflow: hidden;
+}
+.left-text{font-size: 0}
 
-
+.positiveClass{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    line-height: 16px;
+    margin-right: 4px;
+    vertical-align: bottom;
+    background-color:pink;
+}
+.negativeClass{
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    line-height: 16px;
+    margin-right: 4px;
+    vertical-align: bottom;
+    background-color:gray;
+}
+.rating-left{
+    float: left;
+}
+.rating-left .left-time{
+    margin-bottom: 6px;
+    font-size: 10px;
+    color: rgb(147, 153, 159);
+    line-height: 12px;
+}
+.left-rating{
+    font-size: 12px;
+    color: rgb(7, 17, 27);
+    line-height: 16px;
+}
+.rating-right{
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    font-size: 0
+}
+.rating-right .right-phone{
+    font-size: 10px;
+    color: rgb(147, 153, 159);
+    line-height: 12px;
+    vertical-align: top
+}
+.rating-right  img{
+    display: inline-block;
+    margin-left: 6px;
+    width: 12px;
+    height: 12px;
+   border-radius: 6px
+}
+.noRatings{
+    padding: 16px 0;
+    font-size: 12px;
+    color: rgb(147, 153, 159)
+}
 </style>

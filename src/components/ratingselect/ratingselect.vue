@@ -2,29 +2,25 @@
  <div class="ratings-box">
      <!--评价类型-->
      <div class="rating-type">
-        <p class="all">{{desc.all}}</p>
-        <p class="positive">{{desc.positive}}</p>
-        <p class="negative">{{desc.negative}}</p>
+        <p class="all" :class="{'active':selectType === 2}"
+        @click="select(2,$event)">{{desc.all}}
+            <span>{{ratings.length}}</span>
+        </p>
+        <p class="positive" :class="{'active':selectType === 0}"
+        @click="select(0,$event)">{{desc.positive}}
+            <span>{{positives.length}}</span>
+        </p>
+        <p class="negative" :class="{'active-gray':selectType === 1}"
+        @click="select(1,$event)">{{desc.negative}}
+            <span>{{negatives.length}}</span>
+        </p>
     </div> 
     <!--只显示有内容评价-->
-    <div class="rating-switch">
-        <span class="switch-icon">√</span>
+    <div class="rating-switch" @click="toggleContent">
+        <span class="switch-icon" :class="{'on':onlyContent == true}">√</span>
         <span class="switch-text">只看有内容的评价</span>
     </div>
-    <ul>
-        <li v-for="rating in ratings">
-            <div class="rating-left">
-                <p class="left-time">{{rating.rateTime}}</p>
-                <p class="left-rating">{{rating.text}}</p>
-            </div>
-            <div class="rating-right">
-             <span class="right-phone">{{rating.username}}</span>
-             <p>
-                 <img :src="rating.avatar" alt="">
-             </p>
-            </div>
-        </li>
-    </ul>
+    
 </div>
   
 </template>
@@ -62,7 +58,31 @@ props:{
             }
         }
     }
-}  
+} ,
+computed:{
+    positives:function(){
+       return this.ratings.filter((rating) => {
+            return rating.rateType === positive
+        })
+        
+    },
+   
+    negatives:function(){
+        return this.ratings.filter((rating) => {
+            return rating.rateType === negative
+        })
+    }
+},
+methods:{
+    select:function(type,event){
+        this.selectType = type;
+        this.$emit('typeSelect',type)
+    },
+    toggleContent:function(event){
+        this.onlyContent = !this.onlyContent;
+        this.$emit('contentToggle',this.onlyContent)
+    }
+} 
 }
 </script>
 
@@ -75,7 +95,7 @@ props:{
     border-bottom: 1px solid rgba(7, 17, 27,0.1);
     overflow: hidden;
    }
-.ratings-box .rating-type p{
+.rating-type p{
     float: left;
     height: 32px;
     width: 60px;
@@ -83,24 +103,35 @@ props:{
     text-align: center;
     font-size: 12px;
     line-height: 32px;
-    color: rgb(77, 85, 93)
-}
-.ratings-box .all{
-    background-color:rgb(0, 160, 220);
+    color: rgb(77, 85, 93);
     border-radius: 2px
-    }
-.ratings-box .positive{
+}
+.rating-type p span{
+    font-size: 8px
+}
+.all{
+     background-color: rgba(0, 160, 220,0.2);
+     }
+ .positive{
     background-color: rgba(0, 160, 220,0.2)
 }
-.ratings-box .negative{
+ .negative{
     background-color: rgba(77, 85, 93, 0.2)
+}
+.rating-type .active{
+    color: #fff;
+      background-color:rgb(0, 160, 220);
+      }
+.rating-type .active-gray{
+    color: #fff;
+     background-color: rgb(77, 85, 93)
 }
 /*只看有内容的评价*/
 .rating-switch{
     padding: 12px 0 12px 18px;
     border-bottom: 1px solid rgba(7, 17, 27,0.1)
      }
-.rating-switch .switch-icon{
+ .switch-icon{
     display: inline-block;
     width: 24px;
     height: 24px;
@@ -110,6 +141,9 @@ props:{
     color: #fff;
     text-align: center
     }
+.on{
+    background-color: #00c850
+}
 .rating-switch .switch-text{
     font-size: 12px;
     color: rgb(147, 153, 159);

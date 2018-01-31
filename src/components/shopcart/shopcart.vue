@@ -15,13 +15,17 @@
            <!--购物车右边-->
           <div class="shopcart-right minPrice" :class="changeClass">{{payDes}}</div>
       </div>
-    <transition  name="drop"  v-on:beforeEnter="beforeEnter" v-on:enter="enter" v-on:afterEnter="afterEnter">
-        <div class="ball-container" >
-          <div  v-show="ball.show" class="ball" v-for="(ball,index) in balls" :key="ball.index">
+    
+        <div class="ball-container"  >
+            <div v-for="ball in balls">
+            <transition  name="drop"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+          <div  v-show="ball.show" class="ball" >
               <div class="inner  inner-hook"  ></div>
            </div>
+            </transition> 
+            </div>
           </div>
-      </transition> 
+     
     
       <!--购物车列表完-->
       <transition name="listFold" >
@@ -94,7 +98,7 @@ export default {
               show:false
           },
           ],
-          dropBall:[],
+          dropBalls:[],
           //默认购物车列表折叠
            fold:true
       }
@@ -169,9 +173,10 @@ export default {
              if(!ball.show){
                 ball.show = true;
                 ball.el = el;
-                this.dropBall.push(ball);
+                this.dropBalls.push(ball);
                 return
              }
+           
 
          }
       },
@@ -180,6 +185,7 @@ export default {
           var count = this.balls.length;
           while(count--){
               var ball = this.balls[count];
+              console.log(ball)
               if(ball.show){
                   // 元素获得相对视口的位置
                   let rect = ball.el.getBoundingClientRect();
@@ -188,11 +194,10 @@ export default {
                   //获取元素初始位置，首先要把元素显示出来
                   el.style.display='';
                   //纵向动画
-                   el.style.transion='all 0.4s'
-                  el.style.webkitTransform=`translate3d(0,${y}px,0)`
+                 el.style.webkitTransform=`translate3d(0,${y}px,0)`
                    el.style.transform=`translate3d(0,${y}px,0)`
                    var inner = el.getElementsByClassName("inner-hook")[0]
-                    inner.style.transion='all 0.4s'
+                   
                     inner.style.webkitTransform=`translate3d(${x}px,0,0)`
                    inner.style.transform=`translate3d(${x}px,0,0)`
                 }
@@ -200,7 +205,8 @@ export default {
       },
       enter:function(el,done){
           /*触发浏览器重绘*/
-          var rf = el.offestHeight ;
+          var rf = el.offsetHeight ;
+          console.log(rf)
           this.$nextTick(()=>{
                 el.style.webkitTransform='translate3d(0,0,0)'
                 el.style.transform='translate3d(0,0,0)'
@@ -208,12 +214,12 @@ export default {
                 inner.style.webkitTransform='translate3d(0,0,0)'
                 inner.style.transform='translate3d(0,0,0)'
             })
-            done()
+            el.addEventListener('transitionend',done)
       },
       afterEnter:function(el){
-          var dropball = this.dropBall.shift();//把数组的第一个元素删除并返回第一个元素的值
-          if(ball){
-              ball.show="false";
+          var dropball = this.dropBalls.shift();//把数组的第一个元素删除并返回第一个元素的值
+          if(dropball){
+              dropball.show= false;
               el.style.display="none"
           }
       },
@@ -332,17 +338,19 @@ export default {
     color: #fff
 }
 /*小球*/
-.ball-container .ball{
+.ball{
     position: fixed;
     bottom: 22px;
     left: 32px;
-    z-index: 200;
+    z-index: -200;
+    transition: all 0.4s cubic-bezier(0.49,-0.29,0.75,0.41)
 }
-.ball .inner{
-    width: 24px;
-    height: 24px;
+.inner{
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
-    background-color: rgb(0, 160, 220)
+    background-color: rgb(0, 160, 220);
+    transition: all 0.4s linear
 }
 /*购物车列表*/
 .shopcart-list{
