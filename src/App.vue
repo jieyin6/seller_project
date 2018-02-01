@@ -9,22 +9,22 @@
 <script>
 import headerVue from './components/header/header'
 import navVue from './components/nav/nav'
-import store from './vuex/vuex/store'
-import {mapState,mapMutations,mapGetters,mapActions} from 'vuex'
+//import store from './vuex/vuex/store'
+//import {mapState,mapMutations,mapGetters,mapActions} from 'vuex'
 export default {
   name: 'App',
   components:{
     headerVue:headerVue,
     navVue:navVue,
     },
-    computed:{
+  /*  computed:{
       ...mapState(['seller'])
     },
     methods:{
       ...mapMutations(['initstate']),
       ...mapActions(['getState'])
-    }
- /* data:function(){
+    }*/
+  data:function(){
     return{
       seller:{}
     }
@@ -33,17 +33,12 @@ export default {
     //获取seller数据
     var _this =this;
     this.$http.get('/msg').then(function(res){
-      console.log(res.data.seller)
       _this.seller = res.data.seller
     }).catch(function(err){
       console.log(err)
     })
-    }            */
+    }            
 
-    
-    
-    
-  
   }
  
 

@@ -91,7 +91,7 @@ methods:{
 .ratings-box .rating-type{
     width: 100%;
     margin: 0 18px;
-    padding-bottom: 18px;
+    padding: 18px 0;
     border-bottom: 1px solid rgba(7, 17, 27,0.1);
     overflow: hidden;
    }
@@ -129,7 +129,8 @@ methods:{
 /*只看有内容的评价*/
 .rating-switch{
     padding: 12px 0 12px 18px;
-    border-bottom: 1px solid rgba(7, 17, 27,0.1)
+    border-bottom: 1px solid rgba(7, 17, 27,0.1);
+    text-align: left
      }
  .switch-icon{
     display: inline-block;
@@ -141,7 +142,7 @@ methods:{
     color: #fff;
     text-align: center
     }
-.on{
+ .rating-switch .on{
     background-color: #00c850
 }
 .rating-switch .switch-text{

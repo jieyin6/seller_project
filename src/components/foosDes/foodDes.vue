@@ -285,7 +285,7 @@ export default {
     text-align: left
 }
 .food-ratings .ratings-title{
-     padding: 18px;
+     padding: 18px 18px 0 18px;
      font-size: 14px;
     font-weight: 700;
     color: rgb(7, 17, 27);

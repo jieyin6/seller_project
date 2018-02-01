@@ -94,10 +94,10 @@ export default {
   },
   
   created:function(){
-    console.log(this.seller)
+   
     //创建映射
     this.classMap = ["decrease",'discount','special','invoice','guarantee']
-    console.log(this.classMap)
+   
   },
  data:function(){
    return{

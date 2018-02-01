@@ -2,21 +2,24 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { get } from 'http';
+import { Script } from 'vm';
 
 Vue.prototype.$http=axios
 Vue.use(Vuex)
-const store = new Vuex.Store({
-    state:{
-        seller:{},
-    },
-    mutations:{
+
+
+
+const state = {
+        seller:{}
+    }
+const mutations={
         //赋值state
         initstate(state,obj){
             state.seller = obj
             console.log(state)
-        },
-    },
-    actions:{
+        }
+    }
+const actions={
         //获取后台数据
         getState({commit}){
             this.$http.get('/msg').then(function(res){
@@ -27,8 +30,10 @@ const store = new Vuex.Store({
               }
           
          
-       
+       }
+export default new Vuex.Store({
+    state,
+    mutations,
+    actions
+    })
 
-        }
-   
-})
