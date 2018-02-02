@@ -90,7 +90,7 @@ export default {
                 var height2 = this.listHeight[i+1];
                 console.log(height1);
                 //如果是height1是最后一个，height2会返回undefined
-                if( !height2 || (this.scrollY>=height1 && this.scrollY<=height2)){
+                if( !height2 || (this.scrollY >= height1 && this.scrollY < height2)){
                    console.log(i);
                     return i ;
                  }

@@ -29,12 +29,12 @@
     
       <!--购物车列表完-->
       <transition name="list" >
-      <div class="shopcart-list" >
+      <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
               <h1>购物车</h1>
               <p @click="empty">清空</p>
           </div>
-          <div class="list-content" v-show="listShow" ref="listContent" >
+          <div class="list-content"  ref="listContent" >
               <ul>
                   <li class="content-li" v-for="food in selectFoods">
                       <span class="li-name">{{food.name}}</span>
@@ -359,7 +359,7 @@ export default {
     left: 0;
     z-index: -1;
     width: 100%;
-   
+   transform: translate3d(0,-100%,0)
 }
 .shopcart-list .list-header{
     height: 40px;
@@ -435,13 +435,18 @@ export default {
   transform: translate3d(0,0,0)
 }
 .list-leave{
-   transform: translate3d(0,-100%,0)  
+   transform: translate3d(0,100%,0)
 }
  
-.list-enter-active,.list-leave-active{
-  transition:all .5s;
- transform: translate3d(0,-100%,0)
+.list-enter-active{
+    transition:all .5s;
 }
+.list-leave-active{
+    transition:all .5s;
+    transform: translate3d(0,0,0)
+}
+
+
 
 /*列表背景动画*/
 .mask-enter-active {

@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import {urlParse} from './components/common/js/url'
+//import {urlParse} from './components/common/js/url'
 import headerVue from './components/header/header'
 import navVue from './components/nav/nav'
 //import store from './vuex/vuex/store'
