@@ -95,6 +95,13 @@ export default {
           }
       }
   },
+  filters:{
+       formatDate:function(time){
+          var date = new Date(time);
+          console.log(date)
+          return formatDate(date,'yyyy-MM-dd hh:mm')
+      }
+  },
   methods:{
       //显示商品页并可以滚动
       show:function(){
@@ -150,10 +157,7 @@ export default {
       
   },
   computed:{
-      formatDate:function(time){
-          var date = new Date(time);
-          return formatDate(time,'yyyy-MM-dd hh:mm')
-      }
+     
   }
 }
 </script>

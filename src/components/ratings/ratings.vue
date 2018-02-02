@@ -1,6 +1,7 @@
 <template>
   <div class="Ratings-wrapper"  ref="ratings">
       <div>
+          <!-- 评价页上方-->
       <div class="ratings-top">
           <div class="left-wrapper">
               <p class="left-score">{{seller.score}}</p>
@@ -25,6 +26,7 @@
               
           </div>
       </div>
+       <!--评价页下部分-->
       <div class="ratings-bottom">
          <ratingselect :select-type="selectType" :only-content="onlyContent" 
         :ratings="ratings"
@@ -48,6 +50,7 @@
                         </ul>
                     </div>
                 </div>
+                <div class="rating-time">{{rating.rateTime | formatDate}}</div>
             </li>
         </ul>
       </div>
@@ -60,11 +63,11 @@
 import star from '../star/star'
 import ratingselect from '../ratingselect/ratingselect'
 import Bscroll from 'better-scroll'
-
+import {formatDate} from '../common/js/date'
 var positive = 0;
 var negative = 1;
 var all = 2;
-var ERR_OK = 0
+
 export default {
     components:{
         star:star,
@@ -83,7 +86,16 @@ export default {
           onlyContent:true,
         }
     },
+    //日期转换
+     filters:{
+       formatDate:function(time){
+          var date = new Date(time);
+          console.log(date)
+          return formatDate(date,'yyyy-MM-dd hh:mm')
+      }
+  },
     created:function(){
+        //获取datings数据
         var _this = this;
         this.$http.get('/msg').then((response) => {
             console.log(response);
@@ -94,6 +106,7 @@ export default {
          }).catch(function(err){
             console.log(err)
         })
+        //页面滚动
          if(!this.ratingsScroll){
           this.$nextTick(()=>{
               this.ratingsScroll = new Bscroll(this.$refs.ratings,{
@@ -138,15 +151,17 @@ export default {
 </script>
 
 <style>
+/*评价页整体*/
 .Ratings-wrapper{
     position: absolute;
     top: 175px;
-    bottom: 46px;
+    bottom: 0;
     left: 0;
     width: 100%;
     overflow: hidden;
     background-color:rgba(147, 153, 159,0.1)
 }
+/*评价页上方*/
 .ratings-top{
     display: flex;
     padding: 18px 0;
@@ -154,6 +169,7 @@ export default {
     border-bottom:1px solid rgba(7, 17, 27, 0.1) ;
     background-color: #fff
 }
+/*左边综合评分*/
 .left-wrapper{
     flex: 0 0 137px;
     padding: 6px 0;
@@ -178,6 +194,7 @@ export default {
     line-height: 10px;
     margin-bottom: 6px
 }
+/*右边星星打分*/
 .right-wrapper{
     flex: 1;
     padding: 6px 0 6px 24px;
@@ -211,6 +228,7 @@ export default {
    border-top:1px solid rgba(147, 153, 159,0.1);
    background-color: #fff 
 }
+/*评价内容列表*/
 .li-rating{
     padding: 18px 0;
     margin: 0 18px; 
@@ -218,6 +236,7 @@ export default {
     overflow: hidden;
     position: relative
 }
+
 .li-rating img{
    position: absolute;
    top: 18px;
@@ -281,6 +300,7 @@ export default {
     height: 12px;
     background-color: rgb(147, 153, 159)
 }
+/*对食品的评价*/
 .food-recommend ul{margin-left: 20px}
 .food-recommend ul li{
     float: left;
@@ -292,6 +312,15 @@ export default {
     margin-bottom: 2px;
     padding: 0 6px;
     border-radius: 1px
+}
+.rating-time{
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    font-size: 10px;
+    font-weight: 200;
+    color: rgb(147, 153, 159);
+    line-height: 12px
 }
 /*兼容ipnone5*/
 @media only screen and (max-width:320px){

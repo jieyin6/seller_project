@@ -18,17 +18,17 @@
     
         <div class="ball-container"  >
             <div v-for="ball in balls">
-            <transition  name="drop"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
-          <div  v-show="ball.show" class="ball" >
-              <div class="inner  inner-hook"  ></div>
-           </div>
-            </transition> 
+                <transition  name="drop"  @before-enter="beforeEnter" @enter="enter" @after-enter="afterEnter">
+                <div  v-show="ball.show" class="ball" >
+                    <div class="inner  inner-hook"  ></div>
+                </div>
+                </transition> 
             </div>
           </div>
      
     
       <!--购物车列表完-->
-      <transition name="listFold" >
+      <transition name="list" >
       <div class="shopcart-list" >
           <div class="list-header">
               <h1>购物车</h1>
@@ -355,11 +355,11 @@ export default {
 /*购物车列表*/
 .shopcart-list{
     position: absolute;
-    bottom:8px; 
+    top:0; 
     left: 0;
     z-index: -1;
     width: 100%;
-    max-height: 305px
+   
 }
 .shopcart-list .list-header{
     height: 40px;
@@ -384,7 +384,8 @@ export default {
     margin-right: 36px
 }
 .list-content{
-    background-color: #fff
+    background-color: #fff;
+     max-height: 217px
 }
 .list-content li{
     height: 24px;
@@ -430,23 +431,18 @@ export default {
 }
 /*动画效果*/
 /*列表展示*/
-.listFold-enter {
-  opacity:0;
-   
-}
-.listFold-leave{
-  opacity:1;
-   
-}
-.listFold-enter-active{
-  transition:opacity .5s;
- transform: translate3d(0,-100%,0)
-}
-.listFold-leave-active{
-  opacity:0;
-  transition:opacity .5s;
+.list-enter {
   transform: translate3d(0,0,0)
 }
+.list-leave{
+   transform: translate3d(0,-100%,0)  
+}
+ 
+.list-enter-active,.list-leave-active{
+  transition:all .5s;
+ transform: translate3d(0,-100%,0)
+}
+
 /*列表背景动画*/
 .mask-enter-active {
  opacity: 1;

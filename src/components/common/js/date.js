@@ -1,7 +1,8 @@
 export function formatDate(date,fmt){
     console.log('formate')
+    console.log(date)
    if(/(y+)/.test(fmt)){
-       fmt = fmt.replace(RegExp.$1,(date.getFullYear()+'').substr(4-RegExp.$1.length));
+       fmt = fmt.replace(RegExp.$1,(date.getFullYear() + '').substr(4-RegExp.$1.length));
    }
    let O ={
        'M+':date.getMonth()+1,

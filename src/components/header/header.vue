@@ -229,7 +229,11 @@ export default {
   line-height: 24px
 }
 /* 公告 */
-.seller-ad{position: relative}
+.seller-ad{
+  position: relative;
+  padding: 0 22px 0 12px;
+  
+   }
 .seller-ad .ad-img{
   display: block;
   float: left;
@@ -248,7 +252,9 @@ export default {
   line-height: 28px;
   text-align: left;
   text-overflow: ellipsis;
-white-space: nowrap;  
+  white-space: nowrap; 
+  overflow: hidden;
+ 
 }
 .seller-ad .hide_ad{
   position: absolute;
@@ -354,19 +360,19 @@ white-space: nowrap;
   background-size: 16px 16px ;
   background-repeat:no-repeat;
 }
- .decrease{
-  background-image: url('./imgs/jian.png')
+ .header .decrease{
+  background-image: url('./imgs/decrease_2@2x.png')
 }
- .discount{
+.header .discount{
   background-image: url('./imgs/discount_2@2x.png')
 }
- .guarantee{
+.header .guarantee{
   background-image: url('./imgs/guarantee_2@2x.png')
 }
- .invoice{
+.hearder .invoice{
   background-image: url('./imgs/invoice_2@2x.png')
 }
- .special{
+.header .special{
   background-image: url('./imgs/special_2@2x.png')
 }
 .support-item .item-text{

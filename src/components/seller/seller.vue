@@ -2,6 +2,7 @@
 <div class="seller-page" ref="sellerPage">
     <div class="seller-wrapper">
         <div class="detail-wrapper">
+            <!-- 商家主要信息上部分 -->
             <div class="detail-top">
                 <h1>{{seller.name}}</h1>
                 <div class="detail-star">
@@ -9,9 +10,9 @@
                     <span>({{seller.ratingCount}})</span>
                     <span>月售{{seller.sellCount}}单</span>
                 </div>
-                 <div class="collect"></div>
+                 
             </div>
-           
+            <!--商家主要信息下部分-->
              <div class="detail-bottom">
                 <div>
                     <h3>起送价</h3>
@@ -35,6 +36,11 @@
                     </p>
                 </div>
             </div>
+            <!--收藏-->
+            <div class="collect" @click="collect">
+                <span class="collect-icon" :class="{'activeIcon':like}"></span>
+                <span class="like-text">{{likeText}}</span>
+            </div>
         </div>
         <!--公告与活动-->
         <div class="activities-wrapper">
@@ -50,11 +56,13 @@
         <!--商家照片-->
         <div class="pic-wrapper">
             <h1>商家实景</h1>
-            <ul>
+            <div class="pics-wrapper" ref="picwrapper">
+            <ul ref="ulpic">
                 <li v-for="pic in seller.pics">
                     <img :src="pic" alt="">
                 </li>
             </ul>
+            </div>
         </div>
         <!--商家信息-->
         <div class="information-wrapper">
@@ -76,11 +84,23 @@ export default {
          type:Object
       }
   },
+  data:function(){
+      return{
+          //收藏文字改变
+          like:false
+      }
+  },
   components:{
       star:star
   },
+  computed:{
+     likeText(){
+         return this.like ? '已收藏' :'收藏';
+     } 
+  },
   created(){
       this.classMap = ["decrease",'discount','special','invoice','guarantee']
+      //seller页面可以滚动
       if(!this.sellerScroll){
         this.$nextTick(() => {
             this.sellerScroll = new Bscroll(this.$refs.sellerPage,{
@@ -90,19 +110,44 @@ export default {
         }else{
           this.sellerScroll.refresh()
       }
+     
+  },
+  mounted:function(){
+       //图片墙横向滚动
+      if(this.seller.pics){
+      var picWidth = 120;
+      var picMargin = 6;
+      var width = (picWidth+picMargin) * this.seller.pics.length - picMargin;
+      this.$refs.ulpic.style.width = width +'px'
+      console.log(this.$refs.ulpic)
+      this.$nextTick(()=>{
+          this.pinscroll = new Bscroll(this.$refs.picwrapper,{
+              scrollX:true,
+             eventPassthrough:'vertical'
+          });
+      });
+  }
+  },
+  methods:{
+      //收藏事件
+      collect(){
+          this.like = !this.like
+      }
   }
 }
 </script>
 
 <style>
+/*商家页面整体*/
 .seller-page{
     position: absolute;
     top: 175px;
-    bottom: 46px;
+    bottom: 0;
     width: 100%;
     overflow: hidden;
     background-color: rgba(147,153,159,0.1)
 }
+/*商家主要信息*/
 .detail-wrapper{
     background-color: #fff;
     margin-bottom: 16px
@@ -167,6 +212,25 @@ export default {
     color: rgb(7, 17, 27);
     line-height: 24px
 }
+.collect{
+    position: absolute;
+    top: 18px;
+    right: 18px;
+}
+.collect-icon{
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+    margin: 0 auto;
+    background-color: rgb(147,153,159)
+}
+.activeIcon{background-color:rgb(240, 20, 20)}
+.like-text{
+    font-size: 10px;
+    color: rgb(77, 85, 93);
+    line-height: 10px
+}
 /*公告与活动*/
 .activities-wrapper{
     padding: 18px 18px 0 18px;
@@ -229,7 +293,7 @@ export default {
 }
 /*商家实景*/
 .pic-wrapper{
-    padding: 16px 0 16px 16px;
+    padding:16px;
     margin-bottom: 16px;
     border-bottom: 1px solid rgba(7, 17, 27,0.1);
     background-color: #fff;
@@ -241,18 +305,28 @@ export default {
     line-height: 14px;
     text-align: left
 }
-.pic-wrapper ul{
+.pics-wrapper{
+    width: 100%;
     height: 90px;
-    overflow: hidden;
+    overflow:hidden;
+    white-space: nowrap;
 }
-.pic-wrapper ul li img{
-    display: block;
-    float: left;
-    width: 120px;
+.pic-wrapper ul{
+   
+    font-size: 0
+}
+.pic-wrapper ul li{
+    display: inline-block;
+     width: 120px;
     height: 90px;
     margin-right: 6px
 }
-/*商家实景*/
+.pic-wrapper ul li:last-child{margin-right: 0}
+.pic-wrapper ul li img{
+    width: 120px;
+    height: 90px;
+    }
+/*商家信息*/
 .information-wrapper{
     background-color: #fff;
     padding: 18px 18px 0 18px;
